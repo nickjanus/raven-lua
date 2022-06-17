@@ -1,7 +1,8 @@
 package = "raven-lua"
 version = "scm-1"
 source = {
-   url = "https://github.com/cloudflare/raven-lua.git"
+   url = "https://github.com/nickjanus/raven-lua/archive/refs/heads/master.zip",
+   dir = "raven-lua-master"
 }
 description = {
    detailed = [[
@@ -20,6 +21,7 @@ build = {
    type = "builtin",
    modules = {
       raven = "raven/init.lua",
+      ["raven.senders.envoy"] = "raven/senders/envoy.lua",
       ["raven.senders.luasocket"] = "raven/senders/luasocket.lua",
       ["raven.senders.ngx"] = "raven/senders/ngx.lua",
       ["raven.senders.reference"] = "raven/senders/reference.lua",
