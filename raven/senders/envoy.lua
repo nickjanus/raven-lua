@@ -18,12 +18,12 @@ function mt:send(json_str)
     headers["content-length"] = #json_str
     headers["user-agent"] = "raven-lua-envoy/" .. _VERSION
     headers["x-sentry-auth"] = auth
-    headers, body = self.handle:httpCall(self.cluster, headers, json_str,
-        10000, self.async) 
+    headers = self.handle:httpCall(self.cluster, headers, json_str,
+        10000, self.async)
     if (self.async) then
       return true
     end
-    if (headers[":status"]) ~= "200" then 
+    if (headers[":status"]) ~= "200" then
       return true
     end
     return nil, "server responded with status: " .. (headers[":status"] or "none")
@@ -36,8 +36,14 @@ function _M.new(conf)
     end
 
     obj.async = conf.async or true
-    obj.cluster = conf.cluster or return nil, "cluster required"
-    obj.handle = conf.handle or return nil, "handle required"
+    if not conf.cluster then
+        return nil, "cluster required"
+    end
+    obj.cluster = conf.cluster
+    if not conf.cluster then
+        return nil, "handle required"
+    end
+    obj.handle = conf.handle
 
     return setmetatable(obj, mt)
 end
