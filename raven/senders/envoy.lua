@@ -35,7 +35,12 @@ function _M.new(conf)
         return nil, err
     end
 
-    obj.async = conf.async or true
+    if conf.async == nil then
+      obj.async = true
+    else
+      obj.async = conf.async
+    end
+
     if not conf.cluster then
         return nil, "cluster required"
     end
